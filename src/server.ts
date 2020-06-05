@@ -1,6 +1,6 @@
 import * as express from 'express'
 import { Application, json, urlencoded } from 'express'
-import { createConnection, getRepository } from 'typeorm'
+import { createConnection, getRepository, getTreeRepository } from 'typeorm'
 import { Item } from './entities/Item'
 import { createServer } from 'http'
 import * as socketio from 'socket.io'
@@ -18,6 +18,25 @@ async function load() {
 
   io.on('connection', () => {
     console.log('Conectado')
+  })
+
+  app.post('/items', async (req, res, next) => {
+    if (!req.body) return res.status(400).send()
+    const nombre: string = req.body.nombre
+    const descripcion: string = req.body.descripcion
+
+    if (!nombre || !descripcion) return res.status(400).send()
+
+    let item = new Item()
+    item.nombre = nombre
+    item.descripcion = descripcion
+
+    try {
+      item = await getRepository(Item).save(item)
+    } catch (err) {
+      res.status(500)
+    }
+    return res.json({ ...item })
   })
 
   app.get('/items', async (req, res, next) => {
