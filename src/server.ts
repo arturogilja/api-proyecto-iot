@@ -30,6 +30,7 @@ async function load() {
     let item = new Item()
     item.nombre = nombre
     item.descripcion = descripcion
+    item.active = false
 
     try {
       item = await getRepository(Item).save(item)
