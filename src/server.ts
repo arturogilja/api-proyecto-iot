@@ -4,6 +4,7 @@ import { createConnection, getRepository, getTreeRepository } from 'typeorm'
 import { Item } from './entities/Item'
 import { createServer } from 'http'
 import * as socketio from 'socket.io'
+import * as cors from 'cors'
 
 load()
 async function load() {
@@ -13,6 +14,7 @@ async function load() {
   const server = createServer(app)
   const io = socketio(server)
 
+  app.use(cors())
   app.use(json())
   app.use(urlencoded({ extended: true }))
 
