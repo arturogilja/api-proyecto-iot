@@ -34,7 +34,7 @@ async function load() {
     try {
       item = await getRepository(Item).save(item)
     } catch (err) {
-      res.status(500)
+      return res.status(500).send()
     }
     return res.json({ ...item })
   })
