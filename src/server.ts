@@ -39,7 +39,7 @@ async function load() {
     } catch (err) {
       return res.status(500).send(err)
     }
-    io.send('new', item)
+    io.emit('new', item)
     return res.json({ ...item })
   })
 
@@ -61,7 +61,7 @@ async function load() {
     if (!item) return res.status(404).send()
     item.active = !item.active
     await getRepository(Item).save(item)
-    io.send('toggle', item)
+    io.emit('toggle', item)
     return res.status(200).send()
   })
 
