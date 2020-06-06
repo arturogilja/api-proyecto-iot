@@ -39,6 +39,7 @@ async function load() {
     } catch (err) {
       return res.status(500).send(err)
     }
+    io.send('new', item)
     return res.json({ ...item })
   })
 
